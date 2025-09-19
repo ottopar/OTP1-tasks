@@ -6,6 +6,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TemperatureConverterTest {
     TemperatureConverter tc = new TemperatureConverter();
+
+    @Test
+    void kelvinToCelsius() {
+        assertEquals(26.85, tc.kelvinToCelsius(300), 0.01);
+        assertEquals(-173.15, tc.kelvinToCelsius(100), 0.01);
+    }
+
     @Test
     void fahrenheitToCelsius() {
         assertEquals(0.0, tc.fahrenheitToCelsius(32));
