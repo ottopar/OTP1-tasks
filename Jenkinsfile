@@ -12,7 +12,7 @@ pipeline{
     }
 
     tools{
-        maven 'Maven3'
+        maven 'Maven'
     }
     stages{
         stage('Checkout'){
