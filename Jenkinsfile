@@ -1,13 +1,8 @@
 pipeline{
     agent any
     environment {
-        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
-
-        // Define Docker Hub credentials ID
-        DOCKERHUB_CREDENTIALS_ID = 'Docker_hub'
-        // Define Docker Hub repository name
-        DOCKERHUB_REPO = 'ottopar/OTP1-tasks'
-        // Define Docker image tag
+        DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
+        DOCKERHUB_REPO = 'ottopar/temperature-converter'
         DOCKER_IMAGE_TAG = 'latest'
     }
 
@@ -23,19 +18,19 @@ pipeline{
 
         stage('Build'){
             steps {
-                bat 'mvn clean install'
+                sh 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
 
         stage('Code Coverage') {
             steps {
-                bat 'mvn jacoco:report'
+                sh 'mvn jacoco:report'
             }
         }
 
@@ -53,16 +48,16 @@ pipeline{
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t %DOCKERHUB_REPO%:%DOCKER_IMAGE_TAG% .'
+                sh 'docker build -t ${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG} .'
             }
         }
 
         stage('Push Docker Image to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    bat '''
-                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
-                        docker push %DOCKERHUB_REPO%:%DOCKER_IMAGE_TAG%
+                    sh '''
+                        docker login -u $DOCKER_USER -p $DOCKER_PASS
+                        docker push ${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}
                     '''
                 }
             }
