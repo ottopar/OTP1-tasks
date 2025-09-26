@@ -1,10 +1,11 @@
-FROM maven:3.8.6-openjdk-21 AS build
+FROM maven:latest
+label authors="ottopar"
 
 WORKDIR /app
 
-COPY pom.xml /app/
+COPY pom.xml /app
 COPY src /app/src/
 
-RUN mvn clean package -DskipTests
+RUN mvn package
 
-CMD ["java", "-cp", "temperature-converter.jar", "Tasks.TemperatureConverter"]
+CMD ["java", "-jar", "target/temperature-converter.jar"]
