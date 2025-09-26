@@ -1,5 +1,5 @@
 FROM maven:latest
-label authors="ottopar"
+LABEL authors="ottopar"
 
 WORKDIR /app
 
@@ -8,4 +8,4 @@ COPY src /app/src/
 
 RUN mvn package
 
-CMD ["java", "-jar", "target/temperature-converter.jar"]
+CMD ["java", "-cp", "target/OTP1-tasks-1.0-SNAPSHOT.jar", "Tasks.TemperatureConverter"]
